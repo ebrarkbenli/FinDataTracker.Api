@@ -1,0 +1,70 @@
+using FinDataTracker.Api.DTOs;
+using FinDataTracker.Api.Repositories;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FinancialDataTracker.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class StocksController : ControllerBase
+{
+    private readonly IStockRepository _stockRepository;
+
+    public StocksController(IStockRepository stockRepository)
+    {
+        _stockRepository = stockRepository;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<StockResponseDto>>> GetAll()
+    {
+        var stocks = await _stockRepository.GetAllAsync();
+
+        var result = stocks.Select(stock => new StockResponseDto
+        {
+            Id = stock.Id,
+            Symbol = stock.Symbol,
+            Price = stock.Price,
+            LastUpdated = stock.LastUpdated
+        }).ToList();
+
+        return Ok(result);
+    }
+
+    [HttpGet("{symbol}")]
+    public async Task<ActionResult<StockResponseDto>> GetBySymbol(string symbol)
+    {
+        var stock = await _stockRepository.GetBySymbolAsync(symbol);
+
+        if (stock == null)
+        {
+            return NotFound("Stock not found.");
+        }
+
+        var result = new StockResponseDto
+        {
+            Id = stock.Id,
+            Symbol = stock.Symbol,
+            Price = stock.Price,
+            LastUpdated = stock.LastUpdated
+        };
+
+        return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var stock = await _stockRepository.GetByIdAsync(id);
+
+        if (stock == null)
+        {
+            return NotFound("Stock not found.");
+        }
+
+        await _stockRepository.DeleteAsync(stock);
+        await _stockRepository.SaveChangesAsync();
+
+        return NoContent();
+    }
+}
