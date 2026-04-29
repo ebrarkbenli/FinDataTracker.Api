@@ -95,4 +95,22 @@ public class StocksController : ControllerBase
 
         return NoContent();
     }
+    [HttpGet("top")]
+    public async Task<ActionResult<List<StockResponseDto>>> GetTopStocks([FromQuery] int count = 5)
+    {
+        if (count <= 0)
+            return BadRequest("Count must be greater than zero.");
+
+        var stocks = await _stockRepository.GetTopByPriceAsync(count);
+
+        var result = stocks.Select(stock => new StockResponseDto
+        {
+            Id = stock.Id,
+            Symbol = stock.Symbol,
+            Price = stock.Price,
+            LastUpdated = stock.LastUpdated
+        }).ToList();
+
+        return Ok(result);
+    }
 }

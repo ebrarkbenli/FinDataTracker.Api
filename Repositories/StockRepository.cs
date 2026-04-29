@@ -42,4 +42,20 @@ public class StockRepository : IStockRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<List<Stock>> GetTopByPriceAsync(int count)
+    {
+        return await _context.Stocks
+            .OrderByDescending(x => x.Price)
+            .Take(count)
+            .ToListAsync();
+    }
+
+    public async Task<decimal> GetAveragePriceAsync()
+    {
+        if (!await _context.Stocks.AnyAsync())
+            return 0;
+
+        return await _context.Stocks.AverageAsync(x => x.Price);
+    }
+
 }

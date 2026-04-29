@@ -10,4 +10,6 @@ public interface IStockRepository
     Task AddAsync(Stock stock);
     Task DeleteAsync(Stock stock);
     Task SaveChangesAsync();
+    Task<List<Stock>> GetTopByPriceAsync(int count);
+    Task<decimal> GetAveragePriceAsync();
 }
