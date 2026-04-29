@@ -30,13 +30,15 @@ public class StockPriceService
 
         var root = doc.RootElement;
 
-        // "c" current price field
+        // "c" is the current price field in the Finnhub quote response
         if (root.TryGetProperty("c", out var priceElement))
         {
             var price = priceElement.GetDecimal();
-            
-            if(price <= 0)
+
+            if (price <= 0)
                 return null;
+
+            return price;
         }
 
         return null;

@@ -3,7 +3,7 @@ using FinDataTracker.Api.Repositories;
 using FinDataTracker.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinancialDataTracker.Api.Controllers;
+namespace FinDataTracker.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -14,8 +14,8 @@ public class StocksController : ControllerBase
 
     public StocksController(IStockRepository stockRepository, StockService stockService)
     {
-    _stockRepository = stockRepository;
-    _stockService = stockService;
+        _stockRepository = stockRepository;
+        _stockService = stockService;
     }
 
     [HttpGet]
@@ -99,7 +99,7 @@ public class StocksController : ControllerBase
     public async Task<ActionResult<List<StockResponseDto>>> GetTopStocks([FromQuery] int count = 5)
     {
         if (count <= 0)
-            return BadRequest("Stock data couldnot be fetched. Check the symbol.");
+            return BadRequest("Count must be greater than zero.");
 
         var stocks = await _stockRepository.GetTopByPriceAsync(count);
 

@@ -1,4 +1,5 @@
 using FinDataTracker.Api.Data;
+using FinDataTracker.Api.Middleware;
 using Microsoft.EntityFrameworkCore;
 using FinDataTracker.Api.Repositories;
 using FinDataTracker.Api.Services;
@@ -15,6 +16,7 @@ builder.Services.AddScoped<StockService>();
 
 var app = builder.Build();
 
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
