@@ -1,5 +1,6 @@
 using FinDataTracker.Api.DTOs;
 using FinDataTracker.Api.Repositories;
+using FinDataTracker.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialDataTracker.Api.Controllers;
@@ -9,10 +10,12 @@ namespace FinancialDataTracker.Api.Controllers;
 public class StocksController : ControllerBase
 {
     private readonly IStockRepository _stockRepository;
+    private readonly StockService _stockService;
 
-    public StocksController(IStockRepository stockRepository)
+    public StocksController(IStockRepository stockRepository, StockService stockService)
     {
-        _stockRepository = stockRepository;
+    _stockRepository = stockRepository;
+    _stockService = stockService;
     }
 
     [HttpGet]
@@ -29,6 +32,31 @@ public class StocksController : ControllerBase
         }).ToList();
 
         return Ok(result);
+    }
+
+    [HttpPost("{symbol}")]
+    public async Task<IActionResult> AddStock(string symbol)
+    {
+        if (string.IsNullOrWhiteSpace(symbol))
+        {
+            return BadRequest("Symbol is required");
+        }
+        symbol = symbol.ToUpper();
+
+        var result = await _stockService.AddStockAsync(symbol);
+
+        if (result == null)
+        {
+            return BadRequest("Could not fetch stock data.");
+        }
+
+        return Ok(new
+        {
+            result.Id,
+            result.Symbol,
+            result.Price,
+            result.LastUpdated
+        });
     }
 
     [HttpGet("{symbol}")]
