@@ -99,7 +99,7 @@ public class StocksController : ControllerBase
     public async Task<ActionResult<List<StockResponseDto>>> GetTopStocks([FromQuery] int count = 5)
     {
         if (count <= 0)
-            return BadRequest("Count must be greater than zero.");
+            return BadRequest("Stock data couldnot be fetched. Check the symbol.");
 
         var stocks = await _stockRepository.GetTopByPriceAsync(count);
 

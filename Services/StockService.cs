@@ -15,6 +15,10 @@ public class StockService
     }
      public async Task<Stock?> AddStockAsync(string symbol)
     {
+        if (string.IsNullOrWhiteSpace(symbol))
+            return null;
+
+        symbol = symbol.Trim().ToUpper();
         var existing = await _repository.GetBySymbolAsync(symbol);
 
         if (existing != null)

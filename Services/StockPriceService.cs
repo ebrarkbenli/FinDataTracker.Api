@@ -33,7 +33,10 @@ public class StockPriceService
         // "c" current price field
         if (root.TryGetProperty("c", out var priceElement))
         {
-            return priceElement.GetDecimal();
+            var price = priceElement.GetDecimal();
+            
+            if(price <= 0)
+                return null;
         }
 
         return null;
