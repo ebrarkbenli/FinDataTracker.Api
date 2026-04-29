@@ -11,6 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<StockPriceService>();
+builder.Services.AddScoped<StockService>();
 
 var app = builder.Build();
 

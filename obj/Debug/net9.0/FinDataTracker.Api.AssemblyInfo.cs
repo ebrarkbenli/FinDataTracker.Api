@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FinDataTracker.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+607e94ba012269a9a0c18089e218d52d5fdabbda")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7c6e310157af2a422b7629c45bafa52ab642b240")]
 [assembly: System.Reflection.AssemblyProductAttribute("FinDataTracker.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FinDataTracker.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
