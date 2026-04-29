@@ -3,6 +3,7 @@ import './App.css'
 import {
   addStock,
   deleteStock,
+  getAvaragePrice,
   getAllStocks,
   getTopStocks,
 } from './api/stocksApi'
@@ -10,6 +11,7 @@ import {
 function App() {
   const [stocks, setStocks] = useState([])
   const [topStocks, setTopStocks] = useState([])
+  const [averagePrice, setAveragePrice] = useState(0)
   const [symbol, setSymbol] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isAdding, setIsAdding] = useState(false)
@@ -29,9 +31,14 @@ function App() {
   const refreshDashboard = async () => {
     setErrorMessage('')
     try {
-      const [all, top] = await Promise.all([getAllStocks(), getTopStocks(5)])
+      const [all, top, average] = await Promise.all([
+        getAllStocks(),
+        getTopStocks(5),
+        getAvaragePrice(),
+      ])
       setStocks(all)
       setTopStocks(top)
+      setAveragePrice(average.averagePrice ?? 0)
     } catch (error) {
       setErrorMessage(error.message || 'Failed to load data.')
     } finally {
@@ -111,6 +118,10 @@ function App() {
         <article className="stat-card">
           <p>Portfolio total</p>
           <h2>${totalValue.toFixed(2)}</h2>
+        </article>
+        <article className="stat-card">
+          <p>Average price</p>
+          <h2>${Number(averagePrice).toFixed(2)}</h2>
         </article>
         <article className="stat-card">
           <p>Highest stock</p>

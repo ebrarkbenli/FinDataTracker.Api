@@ -30,6 +30,8 @@ export const getAllStocks = () => request('/api/stocks')
 
 export const getTopStocks = (count = 5) => request(`/api/stocks/top?count=${count}`)
 
+export const getAvaragePrice = () => request('/api/stocks/avarage-price')
+
 export const addStock = (symbol) =>
   request(`/api/stocks/${encodeURIComponent(symbol)}`, { method: 'POST' })
 

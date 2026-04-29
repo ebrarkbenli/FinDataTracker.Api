@@ -44,18 +44,26 @@ public class StockRepository : IStockRepository
 
     public async Task<List<Stock>> GetTopByPriceAsync(int count)
     {
-        return await _context.Stocks
+        var stocks = await _context.Stocks
+            .AsNoTracking()
+            .ToListAsync();
+
+        return stocks
             .OrderByDescending(x => x.Price)
             .Take(count)
-            .ToListAsync();
+            .ToList();
     }
 
     public async Task<decimal> GetAveragePriceAsync()
     {
-        if (!await _context.Stocks.AnyAsync())
+        var stocks = await _context.Stocks
+            .AsNoTracking()
+            .ToListAsync();
+
+        if (stocks.Count == 0)
             return 0;
 
-        return await _context.Stocks.AverageAsync(x => x.Price);
+        return stocks.Average(x => x.Price);
     }
 
 }

@@ -113,4 +113,15 @@ public class StocksController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("avarage-price")]
+    public async Task<ActionResult<object>> GetAvaragePrice()
+    {
+        var averagePrice = await _stockRepository.GetAveragePriceAsync();
+
+        return Ok(new
+        {
+            AveragePrice = averagePrice
+        });
+    }
 }
